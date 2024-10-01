@@ -27,13 +27,13 @@ Suivez ces étapes pour configurer le projet sur votre machine locale :
 **Clonez le repository :**
 
 ```bash
-git clone https://github.com/HarounaTraore/API-gestion-recette.git
+git clone https://github.com/HarounaTraore/gestion-recette-api.git
 ```
 
 **Accédez au dossier du projet :**
 
 ```bash
-cd API-gestion-recette
+cd gestion-recette-api
 ```
 
 **Installez les dépendances :**
@@ -44,25 +44,26 @@ npm install
 
 ## Configuration de la base de données
 
-1. Assurez-vous que **MySQL** est en cours d'exécution sur votre machine.
-2. Créez une base de données pour le projet (par exemple, `gestion_recettes`).
-3. Modifiez le fichier `.env.exampl`en le nommant `.env` pour y insérer les informations de connexion à la base de données, ces modifications sont valables pour le fichier `.env.test.exampl` pour l'utilisation de l'image docker.
+1. **Importation de la base de données**
+   Ouvrez le terminal dans le dossier courant, copiez le commande ci-dessous en remplaçant `user_name` par votre `nom d'utilisateur`
+
+```bash
+  mysql -u user_name -p gestion_recettes < gestion_recettes.sql
+```
+
+2. Renommez les fichiers `.env.exampl` et `.env.test.exampl` en enlevant le sufixe `.exampl` puis modifiez pour y insérer les informations de connexion à la base de données.
+
+- `.env`: est utilisé par mysql en local
+- `.env.test`: est utilisé par image mysql
 
 Exemple de fichier `.env` :
 
 ```bash
-DB_HOST=localhost
-DB_USER=USER
-DB_PASSWORD=PASSWORD
-DB_NAME=NAME_DB
-DB_PORT=PORT
-WFC=true
-CL=10
-QL=0
-
-MYSQL_ROOT_USER=USER
-MYSQL_ROOT_PASSWORD=PASSWORD
-MYSQL_DATABASE=NAME_DB
+  DB_USER=USER_NAME
+  DB_PASSWORD=PASSWORD
+  DB_HOST=localhost
+  DB_PORT=PORT
+  DB_NAME=gestion_recettes
 ```
 
 ## Utilisation
@@ -77,9 +78,25 @@ L'API sera accessible à `http://localhost:3000`.
 
 ## Endpoints de l'API
 
-### GET /recettes
+### GET: /recettes
 
 - **Description** : Récupère toutes les recettes.
+- **Réponse** :
+
+```json
+[
+  {
+    "id": 1,
+    "titre": "Tarte aux pommes",
+    "type": "Dessert",
+    "ingredients": "Pommes, Sucre, Pâte"
+  }
+]
+```
+
+### GET: /recettes/:id
+
+- **Description** : Récupère une par son recette.
 - **Réponse** :
 
 ```json
@@ -159,12 +176,20 @@ npm test
 
 ## Analyse et formatage de code
 
-L'analyse statique du code est réalisée avec **ESLint** et le formatage avec **Prettier**. Ces outils sont configurés pour être utilisés dans votre pipeline de développement afin de maintenir un code propre et cohérent.
+L'analyse statique du code est réalisée avec **ESLint** et le formatage avec **Prettier**. Ces outils sont configurés pour être utilisés pour maintenir un code propre et cohérent.
 
 ### Exécuter l'analyse du code :
 
+pour chercher les erreurs:
+
 ```bash
 npm run lint
+```
+
+pour fixer les erreurs corrigeable par ESLint:
+
+```bash
+npm run lint:fix
 ```
 
 ### Exécuter le formatage automatique :
@@ -175,37 +200,20 @@ npm run format
 
 ## Containerisation avec Docker
 
-Ce projet utilise **Docker** pour la containerisation, ce qui permet de déployer facilement l'API dans n'importe quel environnement.
-
 ### Instructions pour Docker :
 
-1. **Lien vers l'image DockerHub** : [ lien image](https://hub.docker.com/r/harounatraore/recette)
+1. **Lien vers l'image DockerHub** : [ lien image](https://hub.docker.com/r/harounatraore/gestion-recette/tags)
+
+telecharger l'image à l'aide de :
+
+```bash
+  docker pull harounatraore/gestion-recette
+```
 
 2. **Lancer les conteneurs Docker** :
 
-   ```bash
-    docker-compose up -d
-   ```
-
-3. **Connexion au service MySQL** :
-
-   ```bash
-   docker exec -it recette_mysql mysql -u root -p
-   ```
-
-4. **Créer la base de données et les tables** :
-
-```sql
-   CREATE DATABASE IF NOT EXISTS gestion_recettes;
-   USE gestion_recettes;
-
-
-   CREATE TABLE IF NOT EXISTS recettes (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      titre VARCHAR(255) NOT NULL,
-      type VARCHAR(50) NOT NULL,
-      ingredients VARCHAR(255) NOT NULL
-   );
+```bash
+  docker-compose up -d
 ```
 
 ## Documentation et Collection Postman
@@ -218,7 +226,3 @@ Pour tester les différents endpoints de l'API, vous pouvez utiliser la collecti
 ## Auteur
 
 [Harouna Traoré](https://github.com/HarounaTraore)
-
-## Contributeur
-
-[Abderahmane Thimbo](https://github.com/AbderahmaneThimbo)

@@ -8,9 +8,7 @@ export const pool = createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  waitForConnections: process.env.WFC === "true",
   connectionLimit: false,
-  queueLimit: parseInt(process.env.QL) || 0,
 });
 
 const connection = async () => {
