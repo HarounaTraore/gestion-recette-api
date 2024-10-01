@@ -1,0 +1,28 @@
+services:
+  app:
+    container_name: recettes
+    image: recette
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/index
+    depends_on:
+      - db
+    env_file:
+      - .env.test
+
+  db:
+    image: mysql
+    container_name: recette_mysql
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3308:3306"
+    restart: always
+    volumes:
+      - ./gestion_recettes.sql:/docker-entrypoint-initdb.d/gestion_recettes.sql
+
+volumes:
+  mysql-data:
