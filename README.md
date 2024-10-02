@@ -202,6 +202,12 @@ npm run format
 
 ### Instructions pour Docker :
 
+1. **Construction de l'image**
+
+```bash
+docker build -t my-app .
+```
+
 1. **Lien vers l'image DockerHub** : [ lien image](https://hub.docker.com/r/harounatraore/gestion-recette/tags)
 
 telecharger l'image à l'aide de :
@@ -210,7 +216,13 @@ telecharger l'image à l'aide de :
   docker pull harounatraore/gestion-recette
 ```
 
-2. **Lancer les conteneurs Docker** :
+2. **Construire et Lancer les conteneurs avec Docker compose**
+
+```bash
+docker-compose up --build
+```
+
+3. **Lancer les conteneurs existants avec Docker compose** :
 
 ```bash
   docker-compose up -d
@@ -222,6 +234,33 @@ Pour tester les différents endpoints de l'API, vous pouvez utiliser la collecti
 
 - **Exporter la collection** : `recettes_collection.json`
 - **Importer dans Postman** et exécuter les requêtes.
+
+- **_Cas où les tests posteman ne fonctionnent pas avec Docker_**
+
+1.  Copiez le command ci-dessous en remplaçant `user_name` par votre `nom d'utilisateur renseigner dans .env.test` puis `renseigner votre mot de passe `
+
+```bash
+docker exec -it recette_mysql  mysql -u user_name -p
+```
+
+2. Assurez-vous d'être connecter à l'image de `mysql` et copiez le `script sql` ci-dessous puis le collez dans le terminale.
+
+```sql
+CREATE DATABASE IF NOT EXISTS gestion_recettes;
+USE gestion_recettes;
+
+CREATE TABLE IF NOT EXISTS recettes(
+   id INT,
+   titre VARCHAR(100) NOT NULL,
+   ingredients TEXT NOT NULL,
+   type VARCHAR(50) NOT NULL,
+   PRIMARY KEY(id),
+   UNIQUE(titre)
+);
+
+INSERT INTO `recettes` (titre, ingredients, type) VALUES
+('Spaghetti Bolognese', 'Pates, sauce tomate, viande hachee, oignon, ail', 'Plat'),
+```
 
 ## Auteur
 
