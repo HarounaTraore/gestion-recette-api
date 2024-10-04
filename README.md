@@ -205,24 +205,16 @@ npm run format
 1. **Construction de l'image**
 
 ```bash
-docker build -t my-app .
+docker build -t gestion_recettes .
 ```
 
-1. **Lien vers l'image DockerHub** : [ lien image](https://hub.docker.com/r/harounatraore/gestion-recette/tags)
-
-telecharger l'image à l'aide de :
-
-```bash
-  docker pull harounatraore/gestion-recette
-```
-
-2. **Construire et Lancer les conteneurs avec Docker compose**
+1. **Construire et Lancer les conteneurs avec Docker compose**
 
 ```bash
 docker-compose up --build
 ```
 
-3. **Lancer les conteneurs existants avec Docker compose** :
+2. **Lancer les conteneurs existants avec Docker compose** :
 
 ```bash
   docker-compose up -d
@@ -245,7 +237,7 @@ docker exec -it recette_mysql  mysql -u user_name -p
 
 2. Assurez-vous d'être connecter à l'image de `mysql` et copiez le `script sql` ci-dessous puis le collez dans le terminale.
 
-```sql
+```bash
 CREATE DATABASE IF NOT EXISTS gestion_recettes;
 USE gestion_recettes;
 
